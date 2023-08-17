@@ -5,6 +5,8 @@ type Day = {
   daily_chance_of_snow: number;
   maxtemp_c: number;
   maxtemp_f: number;
+  mintemp_c: number;
+  mintemp_f: number;
   uv: number;
   condition: { icon: string; text: string };
 };
@@ -21,10 +23,11 @@ type Hour = {
   time_epoch: number;
 };
 
-type ForecastDay = {
+export type ForecastDay = {
   astro: Astro;
   date: string;
   day: Day;
+  date_epoch: number;
   hour: Hour[];
 };
 

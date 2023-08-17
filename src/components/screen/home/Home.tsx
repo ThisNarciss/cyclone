@@ -2,15 +2,17 @@ import Image from "next/image";
 import { Inter, Rubik } from "next/font/google";
 import { useState, useEffect, useMemo } from "react";
 import { getForecastWeather } from "@/api/weather-api";
-import { Forecast } from "@/ts/types/forecast-day";
+import { ForecastDay } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const daysOfWeek = ["Today", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 export const Home = () => {
   const [currentWeather, setCurrentWeather] = useState<Current | null>(null);
-  const [forecastWeather, setForecastWeather] = useState<Forecast | null>(null);
+  const [forecastWeather, setForecastWeather] = useState<ForecastDay[]>([]);
   const [location, setLocation] = useState<Location | null>(null);
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
@@ -35,13 +37,13 @@ export const Home = () => {
     (async () => {
       const forecastData = await getForecastWeather({ latitude, longitude });
       setCurrentWeather(forecastData.current);
-      setForecastWeather(forecastData.forecast);
+      setForecastWeather(forecastData.forecast.forecastday);
       setLocation(forecastData.location);
     })();
   }, [longitude, latitude]);
 
   const getFilteredHour = useMemo(() => {
-    return forecastWeather?.forecastday[0].hour.filter((times) => {
+    return forecastWeather[0]?.hour.filter((times) => {
       switch (times.time.slice(-5)) {
         case "06:00":
           return true;
@@ -71,83 +73,130 @@ export const Home = () => {
   console.log(forecastWeather);
   console.log(currentWeather);
   console.log(location);
-
-  // const { name, region, country, tz_id }: Location = weather.location;
-  // const {
-  //   condition,
-  //   feelslike_c,
-  //   last_updated,
-  //   temp_c,
-  //   wind_kph,
-  //   precip_mm,
-  //   uv,
-  //   cloud,
-  // }: Current = weather.current;
+  if (!forecastWeather?.length && !currentWeather) {
+    return;
+  }
 
   return (
-    <div>
+    <div className="container mx-auto">
       <div>
         <label>
           <input type="text" name="search" placeholder="Search for cities" />
         </label>
       </div>
-      <section>
-        <div>
-          <h1>{location?.name}</h1>
-          <p>{forecastWeather?.forecastday[0].day.daily_chance_of_rain}</p>
-          <p>{currentWeather?.temp_c}</p>
-        </div>
+      <div className="homeColumns gap-x-30px gap-y-15px homeRows grid">
+        <section className="col-start-1 row-start-1 flex items-center">
+          <div className="">
+            <h1>{location?.name}</h1>
+            <p>
+              Chance of rain: {forecastWeather[0]?.day.daily_chance_of_rain}%
+            </p>
+            <p>{currentWeather?.temp_c}</p>
+          </div>
 
-        <Image
-          className=""
-          src={`https:${forecastWeather?.forecastday[0].day.condition.icon}`}
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </section>
-      <section>
-        <h2>Today&apos;s forecast</h2>
-        {forecastWeather?.forecastday.length && (
-          <ul>
-            {getFilteredHour?.map((item) => {
-              return (
-                <li key={item.time_epoch}>
-                  <p>{item.time.slice(-5)}</p>
-                  <Image
-                    className=""
-                    src={`https:${item.condition.icon}`}
-                    alt="Next.js Logo"
-                    width={180}
-                    height={37}
-                    priority
-                  />
-                  <p>{item.temp_c}</p>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
-      <section>
-        <h2>air conditions</h2>
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </section>
-      <section>
-        <h2>7-day forecast</h2>
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </section>
+          <Image
+            className=""
+            src={`https:${forecastWeather[0]?.day.condition.icon}`}
+            alt="weather picture"
+            width={180}
+            height={37}
+            priority
+          />
+        </section>
+        <section className="col-start-1 row-start-2">
+          <h2>Today&apos;s forecast</h2>
+          {forecastWeather?.length && (
+            <ul className="flex">
+              {getFilteredHour?.map((item) => {
+                return (
+                  <li key={item.time_epoch}>
+                    <p>{item.time.slice(-5)}</p>
+                    <Image
+                      className=""
+                      src={`https:${item.condition.icon}`}
+                      alt="weather picture"
+                      width={180}
+                      height={37}
+                      priority
+                    />
+                    <p>{item.temp_c}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+        <section className="col-start-1 row-start-3">
+          <h2>Air conditions</h2>
+          <button>See more</button>
+          <div className="flex">
+            <div>
+              <div>
+                <svg>
+                  <use></use>
+                </svg>
+                <h3>Real Feel</h3>
+              </div>
+              <p>{currentWeather?.feelslike_c}</p>
+            </div>
+            <div>
+              <div>
+                <svg>
+                  <use></use>
+                </svg>
+                <h3>Wind</h3>
+              </div>
+              <p>{currentWeather?.wind_kph} km/h</p>
+            </div>
+            <div>
+              <div>
+                <svg>
+                  <use></use>
+                </svg>
+                <h3>Chance of rain</h3>
+              </div>
+              <p>{forecastWeather[0].day.daily_chance_of_rain}%</p>
+            </div>
+            <div>
+              <div>
+                <svg>
+                  <use></use>
+                </svg>
+                <h3>UV Index</h3>
+              </div>
+              <p>{currentWeather?.uv}</p>
+            </div>
+          </div>
+        </section>
+        <section className="col-start-2 row-start-1 row-end-3">
+          <h2>7-day forecast</h2>
+          {forecastWeather.length && (
+            <ul>
+              {forecastWeather.slice(0, 7).map((day, idx) => {
+                return (
+                  <li key={day.date_epoch} className="flex">
+                    <h3>{daysOfWeek[idx]}</h3>
+                    <div>
+                      <Image
+                        className=""
+                        src={`https:${day.day.condition.icon}`}
+                        alt="weather picture"
+                        width={180}
+                        height={37}
+                        priority
+                      />
+                      <p>{day.day.condition.text}</p>
+                    </div>
+                    <p>
+                      {day.day.maxtemp_c}/{day.day.mintemp_c}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      </div>
     </div>
   );
 };
