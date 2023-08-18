@@ -6,7 +6,7 @@ import { ForecastDay } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
 
-const inter = Inter({ subsets: ["latin"] });
+const rubik = Rubik({ weight: ["600"], subsets: ["latin"] });
 
 const daysOfWeek = ["Today", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -78,20 +78,20 @@ export const Home = () => {
   }
 
   return (
-    <div className="container mx-auto">
+    <div className={`container mx-auto px-8 ${rubik.className}`}>
       <div>
         <label>
           <input type="text" name="search" placeholder="Search for cities" />
         </label>
       </div>
       <div className="homeColumns gap-x-30px gap-y-15px homeRows grid">
-        <section className="col-start-1 row-start-1 flex items-center">
+        <section className="col-start-1 row-start-1 flex items-center justify-between">
           <div className="">
-            <h1>{location?.name}</h1>
-            <p>
+            <h1 className="text-4xl  text-black ">{location?.name}</h1>
+            <p className="text-base">
               Chance of rain: {forecastWeather[0]?.day.daily_chance_of_rain}%
             </p>
-            <p>{currentWeather?.temp_c}</p>
+            <p className="text-6xl">{currentWeather?.temp_c}&#176;</p>
           </div>
 
           <Image
