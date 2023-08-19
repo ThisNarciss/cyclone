@@ -14,10 +14,13 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       gridTemplateRows: {
-        homeRows: "auto",
+        "home-rows": "auto",
       },
       gridTemplateColumns: {
-        homeColumns: "2fr 1fr",
+        "home-columns": "1.5fr 1fr",
+      },
+      colors: {
+        gray: "rgb(147, 153, 162)",
       },
     },
   },

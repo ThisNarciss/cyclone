@@ -84,11 +84,11 @@ export const Home = () => {
           <input type="text" name="search" placeholder="Search for cities" />
         </label>
       </div>
-      <div className="homeColumns gap-x-30px gap-y-15px homeRows grid">
-        <section className="col-start-1 row-start-1 flex items-center justify-between">
+      <div className="grid-cols-home-columns grid gap-x-8 gap-y-4 ">
+        <section className="col-start-1 row-start-1 flex  items-center justify-between px-10 py-10">
           <div className="">
-            <h1 className="text-4xl  text-black ">{location?.name}</h1>
-            <p className="text-base">
+            <h1 className="text-4xl">{location?.name}</h1>
+            <p className="text-gray mb-40 text-base">
               Chance of rain: {forecastWeather[0]?.day.daily_chance_of_rain}%
             </p>
             <p className="text-6xl">{currentWeather?.temp_c}&#176;</p>
@@ -98,41 +98,43 @@ export const Home = () => {
             className=""
             src={`https:${forecastWeather[0]?.day.condition.icon}`}
             alt="weather picture"
-            width={180}
-            height={37}
+            width={240}
+            height={240}
             priority
           />
         </section>
-        <section className="col-start-1 row-start-2">
-          <h2>Today&apos;s forecast</h2>
+        <section className="col-start-1 row-start-2 rounded-2xl bg-zinc-100 px-6 py-6">
+          <h2 className="text-gray mb-6 text-sm uppercase">
+            Today&apos;s forecast
+          </h2>
           {forecastWeather?.length && (
             <ul className="flex">
               {getFilteredHour?.map((item) => {
                 return (
-                  <li key={item.time_epoch}>
-                    <p>{item.time.slice(-5)}</p>
+                  <li key={item.time_epoch} className="text-center">
+                    <p className="text-gray text-base">{item.time.slice(-5)}</p>
                     <Image
                       className=""
                       src={`https:${item.condition.icon}`}
                       alt="weather picture"
-                      width={180}
+                      width={120}
                       height={37}
                       priority
                     />
-                    <p>{item.temp_c}</p>
+                    <p className="text-2xl">{item.temp_c}</p>
                   </li>
                 );
               })}
             </ul>
           )}
         </section>
-        <section className="col-start-1 row-start-3">
+        <section className="col-start-1  row-start-3 rounded-2xl bg-zinc-100 px-6 py-6">
           <h2>Air conditions</h2>
           <button>See more</button>
           <div className="flex">
             <div>
               <div>
-                <svg>
+                <svg width={40} height={40}>
                   <use></use>
                 </svg>
                 <h3>Real Feel</h3>
@@ -141,7 +143,7 @@ export const Home = () => {
             </div>
             <div>
               <div>
-                <svg>
+                <svg width={40} height={40}>
                   <use></use>
                 </svg>
                 <h3>Wind</h3>
@@ -150,7 +152,7 @@ export const Home = () => {
             </div>
             <div>
               <div>
-                <svg>
+                <svg width={40} height={40}>
                   <use></use>
                 </svg>
                 <h3>Chance of rain</h3>
@@ -159,7 +161,7 @@ export const Home = () => {
             </div>
             <div>
               <div>
-                <svg>
+                <svg width={40} height={40}>
                   <use></use>
                 </svg>
                 <h3>UV Index</h3>
@@ -168,20 +170,20 @@ export const Home = () => {
             </div>
           </div>
         </section>
-        <section className="col-start-2 row-start-1 row-end-3">
+        <section className="col-start-2 row-start-1 row-end-4 rounded-2xl bg-zinc-100 px-6 py-6">
           <h2>7-day forecast</h2>
           {forecastWeather.length && (
             <ul>
               {forecastWeather.slice(0, 7).map((day, idx) => {
                 return (
-                  <li key={day.date_epoch} className="flex">
+                  <li key={day.date_epoch} className="flex items-center">
                     <h3>{daysOfWeek[idx]}</h3>
-                    <div>
+                    <div className="flex items-center">
                       <Image
                         className=""
                         src={`https:${day.day.condition.icon}`}
                         alt="weather picture"
-                        width={180}
+                        width={120}
                         height={37}
                         priority
                       />
