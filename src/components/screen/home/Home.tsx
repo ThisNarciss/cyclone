@@ -1,6 +1,9 @@
 import Image from "next/image";
-import { Inter, Rubik } from "next/font/google";
+import { Rubik } from "next/font/google";
 import { useState, useEffect, useMemo } from "react";
+import { FaWind, FaSun } from "react-icons/fa";
+import { SiRainmeter } from "react-icons/si";
+import { RiTempHotLine } from "react-icons/ri";
 import { getForecastWeather } from "@/api/weather-api";
 import { ForecastDay } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
@@ -16,6 +19,8 @@ export const Home = () => {
   const [location, setLocation] = useState<Location | null>(null);
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
+
+  console.log(longitude);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -34,8 +39,13 @@ export const Home = () => {
     if (!longitude && !latitude) {
       return;
     }
+    console.log(longitude);
+
     (async () => {
-      const forecastData = await getForecastWeather({ latitude, longitude });
+      const forecastData = await getForecastWeather({
+        latitude,
+        longitude,
+      });
       setCurrentWeather(forecastData.current);
       setForecastWeather(forecastData.forecast.forecastday);
       setLocation(forecastData.location);
@@ -68,11 +78,7 @@ export const Home = () => {
       }
     });
   }, [forecastWeather]);
-  console.log(getFilteredHour);
 
-  console.log(forecastWeather);
-  console.log(currentWeather);
-  console.log(location);
   if (!forecastWeather?.length && !currentWeather) {
     return;
   }
@@ -87,15 +93,21 @@ export const Home = () => {
       <div className="grid-cols-home-columns grid gap-x-8 gap-y-4 ">
         <section className="col-start-1 row-start-1 flex  items-center justify-between px-10 py-10">
           <div className="">
-            <h1 className="text-4xl">{location?.name}</h1>
+            <h1 className="text-4xl">
+              {location?.name === "Proskurovak"
+                ? "Khmelnytskyi"
+                : location?.name}
+            </h1>
             <p className="text-gray mb-40 text-base">
               Chance of rain: {forecastWeather[0]?.day.daily_chance_of_rain}%
             </p>
-            <p className="text-6xl">{currentWeather?.temp_c}&#176;</p>
+            <p className="text-6xl">
+              {Math.round(currentWeather?.temp_c as number)}&#176;
+            </p>
           </div>
 
           <Image
-            className=""
+            className="object-cover"
             src={`https:${forecastWeather[0]?.day.condition.icon}`}
             alt="weather picture"
             width={240}
@@ -108,20 +120,23 @@ export const Home = () => {
             Today&apos;s forecast
           </h2>
           {forecastWeather?.length && (
-            <ul className="flex">
+            <ul className="flex justify-around">
               {getFilteredHour?.map((item) => {
                 return (
-                  <li key={item.time_epoch} className="text-center">
+                  <li
+                    key={item.time_epoch}
+                    className="border-borderColor border-r-2 text-center last:border-none"
+                  >
                     <p className="text-gray text-base">{item.time.slice(-5)}</p>
                     <Image
                       className=""
                       src={`https:${item.condition.icon}`}
                       alt="weather picture"
-                      width={120}
+                      width={140}
                       height={37}
                       priority
                     />
-                    <p className="text-2xl">{item.temp_c}</p>
+                    <p className="text-2xl">{Math.round(item.temp_c)}&#176;</p>
                   </li>
                 );
               })}
@@ -129,54 +144,66 @@ export const Home = () => {
           )}
         </section>
         <section className="col-start-1  row-start-3 rounded-2xl bg-zinc-100 px-6 py-6">
-          <h2>Air conditions</h2>
-          <button>See more</button>
-          <div className="flex">
-            <div>
+          <div className="mb-6 flex items-center justify-between ">
+            <h2 className="text-gray  text-sm uppercase">Air conditions</h2>
+            <button className="bg-btnColor rounded-[10px] px-2 py-1 text-[rgb(var(--background-end-rgb))]">
+              See more
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-y-[20px]">
+            <div className="flex gap-[10px]">
+              <RiTempHotLine size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <svg width={40} height={40}>
-                  <use></use>
-                </svg>
-                <h3>Real Feel</h3>
+                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                  Real Feel
+                </h3>
+                <p className="text-3xl">
+                  {Math.round(currentWeather?.feelslike_c as number)}&#176;
+                </p>
               </div>
-              <p>{currentWeather?.feelslike_c}</p>
             </div>
-            <div>
+            <div className="flex gap-[10px]">
+              <FaWind size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <svg width={40} height={40}>
-                  <use></use>
-                </svg>
-                <h3>Wind</h3>
+                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                  Wind
+                </h3>
+                <p className="text-3xl">{currentWeather?.wind_kph} km/h</p>
               </div>
-              <p>{currentWeather?.wind_kph} km/h</p>
             </div>
-            <div>
+            <div className="flex gap-[10px]">
+              <SiRainmeter size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <svg width={40} height={40}>
-                  <use></use>
-                </svg>
-                <h3>Chance of rain</h3>
+                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                  Chance of rain
+                </h3>
+                <p className="text-3xl">
+                  {forecastWeather[0].day.daily_chance_of_rain}%
+                </p>
               </div>
-              <p>{forecastWeather[0].day.daily_chance_of_rain}%</p>
             </div>
-            <div>
+            <div className="flex gap-[10px]">
+              <FaSun size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <svg width={40} height={40}>
-                  <use></use>
-                </svg>
-                <h3>UV Index</h3>
+                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                  UV Index
+                </h3>
+                <p className="text-3xl">{currentWeather?.uv}</p>
               </div>
-              <p>{currentWeather?.uv}</p>
             </div>
           </div>
         </section>
-        <section className="col-start-2 row-start-1 row-end-4 rounded-2xl bg-zinc-100 px-6 py-6">
-          <h2>7-day forecast</h2>
+        <section className="col-start-2 row-start-1 row-end-4 rounded-2xl bg-zinc-100 px-6 py-6 text-[rgb(var(--second-text-color))]">
+          <h2 className="uppercase">7-day forecast</h2>
           {forecastWeather.length && (
-            <ul>
+            <ul className="flex flex-col justify-between gap-2">
               {forecastWeather.slice(0, 7).map((day, idx) => {
                 return (
-                  <li key={day.date_epoch} className="flex items-center">
+                  <li
+                    key={day.date_epoch}
+                    className="border-borderColor flex items-center justify-between border-b-2 last:border-none"
+                  >
                     <h3>{daysOfWeek[idx]}</h3>
                     <div className="flex items-center">
                       <Image
@@ -187,10 +214,15 @@ export const Home = () => {
                         height={37}
                         priority
                       />
-                      <p>{day.day.condition.text}</p>
+                      <p className="text-[rgb(var(--foreground-rgb))]">
+                        {day.day.condition.text}
+                      </p>
                     </div>
                     <p>
-                      {day.day.maxtemp_c}/{day.day.mintemp_c}
+                      <span className="text-[rgb(var(--foreground-rgb))]">
+                        {Math.round(day.day.maxtemp_c)}
+                      </span>
+                      /{Math.round(day.day.mintemp_c)}
                     </p>
                   </li>
                 );

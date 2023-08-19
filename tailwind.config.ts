@@ -17,10 +17,12 @@ const config: Config = {
         "home-rows": "auto",
       },
       gridTemplateColumns: {
-        "home-columns": "1.5fr 1fr",
+        "home-columns": "2fr 1fr",
       },
       colors: {
         gray: "rgb(147, 153, 162)",
+        borderColor: "rgb(221, 224, 228)",
+        btnColor: "rgb(68, 163, 255)",
       },
     },
   },
