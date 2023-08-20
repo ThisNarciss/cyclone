@@ -84,13 +84,8 @@ export const Home = () => {
   }
 
   return (
-    <div className={`container mx-auto px-8 ${rubik.className}`}>
-      <div>
-        <label>
-          <input type="text" name="search" placeholder="Search for cities" />
-        </label>
-      </div>
-      <div className="grid-cols-home-columns grid gap-x-8 gap-y-4 ">
+    <div className="pt-8">
+      <div className="grid grid-cols-home-columns gap-x-8 gap-y-4 ">
         <section className="col-start-1 row-start-1 flex  items-center justify-between px-10 py-10">
           <div className="">
             <h1 className="text-4xl">
@@ -98,7 +93,7 @@ export const Home = () => {
                 ? "Khmelnytskyi"
                 : location?.name}
             </h1>
-            <p className="text-gray mb-40 text-base">
+            <p className="mb-40 text-base text-gray">
               Chance of rain: {forecastWeather[0]?.day.daily_chance_of_rain}%
             </p>
             <p className="text-6xl">
@@ -116,7 +111,7 @@ export const Home = () => {
           />
         </section>
         <section className="col-start-1 row-start-2 rounded-2xl bg-zinc-100 px-6 py-6">
-          <h2 className="text-gray mb-6 text-sm uppercase">
+          <h2 className="mb-6 text-sm uppercase text-gray">
             Today&apos;s forecast
           </h2>
           {forecastWeather?.length && (
@@ -125,9 +120,9 @@ export const Home = () => {
                 return (
                   <li
                     key={item.time_epoch}
-                    className="border-borderColor border-r-2 text-center last:border-none"
+                    className="border-r-2 border-borderColor text-center last:border-none"
                   >
-                    <p className="text-gray text-base">{item.time.slice(-5)}</p>
+                    <p className="text-base text-gray">{item.time.slice(-5)}</p>
                     <Image
                       className=""
                       src={`https:${item.condition.icon}`}
@@ -145,8 +140,8 @@ export const Home = () => {
         </section>
         <section className="col-start-1  row-start-3 rounded-2xl bg-zinc-100 px-6 py-6">
           <div className="mb-6 flex items-center justify-between ">
-            <h2 className="text-gray  text-sm uppercase">Air conditions</h2>
-            <button className="bg-btnColor rounded-[10px] px-2 py-1 text-[rgb(var(--background-end-rgb))]">
+            <h2 className="text-sm  uppercase text-gray">Air conditions</h2>
+            <button className="rounded-[10px] bg-btnColor px-2 py-1 text-[rgb(var(--background-end-rgb))]">
               See more
             </button>
           </div>
@@ -155,7 +150,7 @@ export const Home = () => {
             <div className="flex gap-[10px]">
               <RiTempHotLine size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
                   Real Feel
                 </h3>
                 <p className="text-3xl">
@@ -166,7 +161,7 @@ export const Home = () => {
             <div className="flex gap-[10px]">
               <FaWind size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
                   Wind
                 </h3>
                 <p className="text-3xl">{currentWeather?.wind_kph} km/h</p>
@@ -175,7 +170,7 @@ export const Home = () => {
             <div className="flex gap-[10px]">
               <SiRainmeter size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
                   Chance of rain
                 </h3>
                 <p className="text-3xl">
@@ -186,7 +181,7 @@ export const Home = () => {
             <div className="flex gap-[10px]">
               <FaSun size="24px" color="rgb(147, 153, 162)" />
               <div>
-                <h3 className="text-gray mb-[10px] text-xl font-normal">
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
                   UV Index
                 </h3>
                 <p className="text-3xl">{currentWeather?.uv}</p>
@@ -202,7 +197,7 @@ export const Home = () => {
                 return (
                   <li
                     key={day.date_epoch}
-                    className="border-borderColor flex items-center justify-between border-b-2 last:border-none"
+                    className="flex items-center justify-between border-b-2 border-borderColor last:border-none"
                   >
                     <h3>{daysOfWeek[idx]}</h3>
                     <div className="flex items-center">
