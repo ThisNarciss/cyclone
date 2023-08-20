@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Rubik } from "next/font/google";
 import { useState, useEffect, useMemo } from "react";
 import { FaWind, FaSun } from "react-icons/fa";
 import { SiRainmeter } from "react-icons/si";
@@ -8,10 +7,9 @@ import { getForecastWeather } from "@/api/weather-api";
 import { ForecastDay } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
+import { getDayOfWeek } from "@/utils/getDayOfWeek";
 
-const rubik = Rubik({ weight: ["600"], subsets: ["latin"] });
-
-const daysOfWeek = ["Today", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const Home = () => {
   const [currentWeather, setCurrentWeather] = useState<Current | null>(null);
@@ -39,7 +37,6 @@ export const Home = () => {
     if (!longitude && !latitude) {
       return;
     }
-    console.log(longitude);
 
     (async () => {
       const forecastData = await getForecastWeather({
@@ -51,6 +48,9 @@ export const Home = () => {
       setLocation(forecastData.location);
     })();
   }, [longitude, latitude]);
+  const date = new Date("08/21/2023");
+  console.log(date.getDay());
+  console.log(forecastWeather);
 
   const getFilteredHour = useMemo(() => {
     return forecastWeather[0]?.hour.filter((times) => {
@@ -199,7 +199,9 @@ export const Home = () => {
                     key={day.date_epoch}
                     className="flex items-center justify-between border-b-2 border-borderColor last:border-none"
                   >
-                    <h3>{daysOfWeek[idx]}</h3>
+                    <h3>
+                      {idx === 0 ? "Today" : daysOfWeek[getDayOfWeek(day.date)]}
+                    </h3>
                     <div className="flex items-center">
                       <Image
                         className=""

@@ -9,19 +9,20 @@ type Location = {
 axios.defaults.baseURL = "https://api.weatherapi.com/v1";
 
 export const getForecastWeather = async (location: Location) => {
-  const { latitude, longitude } = location;
-  const startCity = "New York";
-  let relativePath =
-    "/forecast.json?days=14&key=70c3a9b2560a4f9bacd72436231608";
-
-  if (latitude && longitude) {
-    relativePath += `&q=${latitude},${longitude}`;
-  } else {
-    relativePath += `&q=${startCity}`;
-  }
-
   try {
+    const { latitude, longitude } = location;
+    const startCity = "New York";
+    let relativePath =
+      "/forecast.json?days=14&key=70c3a9b2560a4f9bacd72436231608";
+
+    if (latitude && longitude) {
+      relativePath += `&q=${latitude},${longitude}`;
+    } else {
+      relativePath += `&q=${startCity}`;
+    }
+
     const { data } = await axios.get(relativePath);
+    console.log(data);
 
     return data;
   } catch (error: any) {
