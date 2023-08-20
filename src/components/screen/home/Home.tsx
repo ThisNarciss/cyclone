@@ -18,7 +18,6 @@ export const Home = () => {
   const [longitude, setLongitude] = useState(0);
   const [latitude, setLatitude] = useState(0);
 
-  console.log(longitude);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -48,9 +47,7 @@ export const Home = () => {
       setLocation(forecastData.location);
     })();
   }, [longitude, latitude]);
-  const date = new Date("08/21/2023");
-  console.log(date.getDay());
-  console.log(forecastWeather);
+  
 
   const getFilteredHour = useMemo(() => {
     return forecastWeather[0]?.hour.filter((times) => {

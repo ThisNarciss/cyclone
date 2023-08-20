@@ -22,7 +22,6 @@ export const getForecastWeather = async (location: Location) => {
     }
 
     const { data } = await axios.get(relativePath);
-    console.log(data);
 
     return data;
   } catch (error: any) {
