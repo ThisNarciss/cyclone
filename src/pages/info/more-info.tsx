@@ -28,9 +28,6 @@ const MoreInfo = () => {
       setLocation(forecastData.location);
     })();
   }, []);
-  console.log(currentWeather);
-  console.log(forecastWeather);
-  console.log(location);
 
   const getFilteredHour = useMemo(
     () => filteredHoursMoreInfo(forecastWeather[0]?.hour),
@@ -44,14 +41,14 @@ const MoreInfo = () => {
   return (
     <div className="pt-8">
       <div className="grid grid-cols-home-columns gap-x-8 gap-y-4 ">
-        <section className="col-start-1 row-start-1 flex  items-center justify-between px-10 py-10">
+        <section className="col-start-1 row-start-1 flex items-center justify-between px-10 py-10">
           <div className="">
             <h1 className="text-4xl">
               {location?.name === "Proskurovak"
                 ? "Khmelnytskyi"
                 : location?.name}
             </h1>
-            <p className="mb-40 text-base text-gray">
+            <p className="mb-20 text-base text-gray">
               Chance of rain: {forecastWeather[0]?.day.daily_chance_of_rain}%
             </p>
             <p className="text-6xl">
@@ -63,8 +60,8 @@ const MoreInfo = () => {
             className="object-cover"
             src={`https:${forecastWeather[0]?.day.condition.icon}`}
             alt="weather picture"
-            width={240}
-            height={240}
+            width={200}
+            height={200}
             priority
           />
         </section>
@@ -73,7 +70,7 @@ const MoreInfo = () => {
             Today&apos;s forecast
           </h2>
           {forecastWeather?.length && (
-            <ul className="flex justify-around">
+            <ul className="flex items-center justify-around">
               {getFilteredHour?.map((item) => {
                 return (
                   <li

@@ -18,8 +18,7 @@ interface IProps {
 
 export const SharedLayout: FC<IProps> = ({ children }) => {
   const { pathname } = useRouter();
-  console.log(pathname);
-  const currentPage = pathArr.find((path) => path === pathname);
+  
 
   return (
     <>

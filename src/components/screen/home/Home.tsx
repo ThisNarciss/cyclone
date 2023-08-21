@@ -46,7 +46,7 @@ export const Home = () => {
                 ? "Khmelnytskyi"
                 : location?.name}
             </h1>
-            <p className="mb-40 text-base text-gray">
+            <p className="mb-20 text-base text-gray">
               Chance of rain: {forecastWeather[0]?.day.daily_chance_of_rain}%
             </p>
             <p className="text-6xl">
@@ -58,8 +58,8 @@ export const Home = () => {
             className="object-cover"
             src={`https:${forecastWeather[0]?.day.condition.icon}`}
             alt="weather picture"
-            width={240}
-            height={240}
+            width={200}
+            height={200}
             priority
           />
         </section>
