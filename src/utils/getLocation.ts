@@ -1,19 +1,24 @@
 type Location = {
-  latitude?: number;
-  longitude?: number;
+  latitude: number;
+  longitude: number;
 };
 
-export const getLocation = async () => {
-  if ("geolocation" in navigator) {
-    const obj: Location = {};
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      obj.latitude = latitude;
-      obj.longitude = longitude;
-      return obj as Location;
-    });
-  } else {
-    console.log("Геолокація не підтримується браузером");
-  }
+export const getLocation = async (): Promise<Location> => {
+  return new Promise<Location>((resolve, reject) => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          reject(error);
+        },
+      );
+    } else {
+      reject(new Error("Geolocation is not available"));
+    }
+  });
 };
