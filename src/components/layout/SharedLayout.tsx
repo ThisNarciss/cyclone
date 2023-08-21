@@ -2,11 +2,13 @@ import Head from "next/head";
 import { Rubik } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, ReactNode } from "react";
+import { ChangeEvent, FC, ReactNode } from "react";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { FaListUl, FaMap } from "react-icons/fa";
 import { MdOutlineSettingsApplications } from "react-icons/md";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { WeatherService } from "@/services/weather-api";
 
 const pathArr = ["/", "cities", "map", "settings"];
 
@@ -17,8 +19,28 @@ interface IProps {
 }
 
 export const SharedLayout: FC<IProps> = ({ children }) => {
+  const [value, setValue] = useState("");
+  const [searchCityData, setSearchCityData] = useState(null);
   const { pathname } = useRouter();
-  
+
+  console.log(searchCityData);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const input = e.target;
+    console.log();
+
+    setValue(input.value);
+  };
+
+  useEffect(() => {
+    if (!value) {
+      return;
+    }
+    (async () => {
+      const data = await WeatherService.searchCityWeather(value);
+      setSearchCityData(data);
+    })();
+  }, [value]);
 
   return (
     <>
@@ -31,10 +53,12 @@ export const SharedLayout: FC<IProps> = ({ children }) => {
             <div className="rounded-2xl bg-zinc-100 px-6 py-6">
               <label>
                 <input
+                  onChange={handleChange}
                   className="bg-inherit text-[rgb(var(--second-text-color))] outline-none"
                   type="text"
                   name="search"
                   placeholder="Search for cities"
+                  value={value}
                 />
               </label>
             </div>
