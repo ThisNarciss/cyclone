@@ -7,4 +7,7 @@ export type Current = {
   precip_mm: number;
   uv: number;
   cloud: number;
+  humidity: number;
+  pressure_mb: number;
+  vis_km: number;
 };

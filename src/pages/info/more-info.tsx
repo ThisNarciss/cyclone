@@ -1,19 +1,21 @@
 import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
-import { FaWind, FaSun } from "react-icons/fa";
+import { FaWind, FaSun, FaShower } from "react-icons/fa";
 import { SiRainmeter } from "react-icons/si";
 import { RiTempHotLine } from "react-icons/ri";
+import { MdVisibility } from "react-icons/md";
+import { IoIosSpeedometer } from "react-icons/io";
+import { FiSunset } from "react-icons/fi";
 import { WeatherService } from "@/services/weather-api";
 import { ForecastDay } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
 import { getDayOfWeek } from "@/utils/getDayOfWeek";
-import { filteredHours } from "@/utils/filteredHour";
-import Link from "next/link";
+import { filteredHoursMoreInfo } from "@/utils/filteredHour";
 
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export const Home = () => {
+const MoreInfo = () => {
   const [currentWeather, setCurrentWeather] = useState<Current | null>(null);
   const [forecastWeather, setForecastWeather] = useState<ForecastDay[]>([]);
   const [location, setLocation] = useState<Location | null>(null);
@@ -26,9 +28,12 @@ export const Home = () => {
       setLocation(forecastData.location);
     })();
   }, []);
+  console.log(currentWeather);
+  console.log(forecastWeather);
+  console.log(location);
 
   const getFilteredHour = useMemo(
-    () => filteredHours(forecastWeather[0]?.hour),
+    () => filteredHoursMoreInfo(forecastWeather[0]?.hour),
     [forecastWeather],
   );
 
@@ -63,7 +68,7 @@ export const Home = () => {
             priority
           />
         </section>
-        <section className="col-start-1 row-start-2 rounded-2xl bg-zinc-100 px-6 py-6">
+        <section className="col-start-2 row-start-1 rounded-2xl bg-zinc-100 px-6 py-6">
           <h2 className="mb-6 text-sm uppercase text-gray">
             Today&apos;s forecast
           </h2>
@@ -91,30 +96,18 @@ export const Home = () => {
             </ul>
           )}
         </section>
-        <section className="col-start-1  row-start-3 rounded-2xl bg-zinc-100 px-6 py-6">
-          <div className="mb-6 flex items-center justify-between ">
-            <h2 className="text-sm  uppercase text-gray">Air conditions</h2>
-            <Link
-              href="/info/more-info"
-              className="rounded-[10px] bg-btnColor px-2 py-1 text-[rgb(var(--background-end-rgb))]"
-            >
-              See more
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 gap-y-[20px]">
-            <div className="flex gap-[10px]">
-              <RiTempHotLine size="24px" color="rgb(147, 153, 162)" />
+        <section className="col-start-1  row-start-2 row-end-3 ">
+          <ul className="flex flex-wrap gap-x-[30px] gap-y-[20px]">
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+              <FaSun size="24px" color="rgb(147, 153, 162)" />
               <div>
                 <h3 className="mb-[10px] text-xl font-normal text-gray">
-                  Real Feel
+                  UV Index
                 </h3>
-                <p className="text-3xl">
-                  {Math.round(currentWeather?.feelslike_c as number)}&#176;
-                </p>
+                <p className="text-3xl">{currentWeather?.uv}</p>
               </div>
-            </div>
-            <div className="flex gap-[10px]">
+            </li>
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
               <FaWind size="24px" color="rgb(147, 153, 162)" />
               <div>
                 <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -122,8 +115,39 @@ export const Home = () => {
                 </h3>
                 <p className="text-3xl">{currentWeather?.wind_kph} km/h</p>
               </div>
-            </div>
-            <div className="flex gap-[10px]">
+            </li>
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+              <FaShower size="24px" color="rgb(147, 153, 162)" />
+              <div>
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
+                  Humidity
+                </h3>
+                <p className="text-3xl">
+                  {Math.round(currentWeather?.humidity as number)}%
+                </p>
+              </div>
+            </li>
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+              <MdVisibility size="24px" color="rgb(147, 153, 162)" />
+              <div>
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
+                  Visibility
+                </h3>
+                <p className="text-3xl">{currentWeather?.vis_km} km</p>
+              </div>
+            </li>
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+              <RiTempHotLine size="24px" color="rgb(147, 153, 162)" />
+              <div>
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
+                  Feels like
+                </h3>
+                <p className="text-3xl">
+                  {Math.round(currentWeather?.feelslike_c as number)}&#176;
+                </p>
+              </div>
+            </li>
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
               <SiRainmeter size="24px" color="rgb(147, 153, 162)" />
               <div>
                 <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -133,19 +157,28 @@ export const Home = () => {
                   {forecastWeather[0].day.daily_chance_of_rain}%
                 </p>
               </div>
-            </div>
-            <div className="flex gap-[10px]">
-              <FaSun size="24px" color="rgb(147, 153, 162)" />
+            </li>
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+              <IoIosSpeedometer size="24px" color="rgb(147, 153, 162)" />
               <div>
                 <h3 className="mb-[10px] text-xl font-normal text-gray">
-                  UV Index
+                  Pressure
                 </h3>
-                <p className="text-3xl">{currentWeather?.uv}</p>
+                <p className="text-3xl">{currentWeather?.pressure_mb} hPa</p>
               </div>
-            </div>
-          </div>
+            </li>
+            <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+              <FiSunset size="24px" color="rgb(147, 153, 162)" />
+              <div>
+                <h3 className="mb-[10px] text-xl font-normal text-gray">
+                  Sunset
+                </h3>
+                <p className="text-3xl">{forecastWeather[0].astro.sunset}</p>
+              </div>
+            </li>
+          </ul>
         </section>
-        <section className="col-start-2 row-start-1 row-end-4 rounded-2xl bg-zinc-100 px-6 py-6 text-[rgb(var(--second-text-color))]">
+        <section className="col-start-2 row-start-2 row-end-3 rounded-2xl bg-zinc-100 px-6 py-6 text-[rgb(var(--second-text-color))]">
           <h2 className="uppercase">7-day forecast</h2>
           {forecastWeather.length && (
             <ul className="flex flex-col justify-between gap-2">
@@ -163,7 +196,7 @@ export const Home = () => {
                         className=""
                         src={`https:${day.day.condition.icon}`}
                         alt="weather picture"
-                        width={120}
+                        width={58}
                         height={37}
                         priority
                       />
@@ -187,3 +220,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default MoreInfo;

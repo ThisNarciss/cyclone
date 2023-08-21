@@ -11,7 +11,7 @@ type Day = {
   condition: { icon: string; text: string };
 };
 
-type Hour = {
+export type Hour = {
   chance_of_rain: number;
   chance_of_snow: number;
   cloud: number;

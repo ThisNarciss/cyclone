@@ -6,6 +6,9 @@ import { FC, ReactNode } from "react";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { FaListUl, FaMap } from "react-icons/fa";
 import { MdOutlineSettingsApplications } from "react-icons/md";
+import { useRouter } from "next/router";
+
+const pathArr = ["/", "cities", "map", "settings"];
 
 const rubik = Rubik({ weight: ["600"], subsets: ["latin"] });
 
@@ -14,6 +17,10 @@ interface IProps {
 }
 
 export const SharedLayout: FC<IProps> = ({ children }) => {
+  const { pathname } = useRouter();
+  console.log(pathname);
+  const currentPage = pathArr.find((path) => path === pathname);
+
   return (
     <>
       <Head>
@@ -47,7 +54,11 @@ export const SharedLayout: FC<IProps> = ({ children }) => {
           <ul className="flex flex-col gap-7">
             <li>
               <Link
-                className="flex flex-col items-center gap-2 text-center text-[rgb(var(--second-text-color))] hover:text-black focus:text-black active:text-black"
+                className={`flex flex-col items-center gap-2 text-center  hover:text-black focus:text-black ${
+                  pathname === "/"
+                    ? "text-black"
+                    : "text-[rgb(var(--second-text-color))]"
+                }`}
                 href={"/"}
               >
                 <TiWeatherPartlySunny size={30} />
@@ -56,7 +67,11 @@ export const SharedLayout: FC<IProps> = ({ children }) => {
             </li>
             <li>
               <Link
-                className="flex flex-col  items-center gap-2 text-center text-[rgb(var(--second-text-color))] hover:text-black focus:text-black active:text-black"
+                className={`flex flex-col items-center gap-2 text-center  hover:text-black focus:text-black ${
+                  pathname === "/cities"
+                    ? "text-black"
+                    : "text-[rgb(var(--second-text-color))]"
+                }`}
                 href={"/cities"}
               >
                 <FaListUl size={30} />
@@ -65,7 +80,11 @@ export const SharedLayout: FC<IProps> = ({ children }) => {
             </li>
             <li>
               <Link
-                className="flex flex-col items-center gap-2 text-center text-[rgb(var(--second-text-color))] hover:text-black focus:text-black active:text-black"
+                className={`flex flex-col items-center gap-2 text-center hover:text-black focus:text-black ${
+                  pathname === "/map"
+                    ? "text-black"
+                    : "text-[rgb(var(--second-text-color))]"
+                }`}
                 href={"/map"}
               >
                 <FaMap size={30} />
@@ -75,7 +94,11 @@ export const SharedLayout: FC<IProps> = ({ children }) => {
             <li>
               {" "}
               <Link
-                className="flex flex-col items-center gap-2 text-center text-[rgb(var(--second-text-color))] hover:text-black focus:text-black active:text-black"
+                className={`flex flex-col items-center gap-2 text-center  hover:text-black focus:text-black ${
+                  pathname === "/settings"
+                    ? "text-black"
+                    : "text-[rgb(var(--second-text-color))]"
+                }`}
                 href={"/settings"}
               >
                 <MdOutlineSettingsApplications size={30} />
