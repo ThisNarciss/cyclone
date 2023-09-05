@@ -35,10 +35,15 @@ export const WeatherService = {
       return [];
     }
 
-    const { lat, lon } = searchData[0];
-    const { data } = await axios.get(
-      `/forecast.json?days=7&key=70c3a9b2560a4f9bacd72436231608&q=${lat},${lon}`,
-    );
+    const searchCity = searchData.map(async ({ name }: { name: string }) => {
+      const { data } = await axios.get(
+        `/forecast.json?days=7&key=70c3a9b2560a4f9bacd72436231608&q=${name}`,
+      );
+      return data;
+    });
+
+    const data = await Promise.all(searchCity);
+
     return data;
   },
 };

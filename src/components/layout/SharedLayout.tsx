@@ -20,15 +20,13 @@ interface IProps {
 
 export const SharedLayout: FC<IProps> = ({ children }) => {
   const [value, setValue] = useState("");
-  const [searchCityData, setSearchCityData] = useState(null);
+  const [searchCityData, setSearchCityData] = useState<any[]>([]);
   const { pathname } = useRouter();
 
   console.log(searchCityData);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
-    console.log();
-
     setValue(input.value);
   };
 
