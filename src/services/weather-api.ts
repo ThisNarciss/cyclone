@@ -24,7 +24,7 @@ export const WeatherService = {
       return error.message;
     }
   },
-  searchCityWeather: async (city: string) => {
+  searchCityWeather: async (city: string | string[] | undefined) => {
     const { data: searchData } = await axios.get(
       `/search.json?key=70c3a9b2560a4f9bacd72436231608&q=${city}`,
     );

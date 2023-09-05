@@ -2,13 +2,11 @@ import Head from "next/head";
 import { Rubik } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { ChangeEvent, FC, ReactNode } from "react";
+import { ChangeEvent, FC, ReactNode, useState } from "react";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { FaListUl, FaMap } from "react-icons/fa";
 import { MdOutlineSettingsApplications } from "react-icons/md";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { WeatherService } from "@/services/weather-api";
 
 const pathArr = ["/", "cities", "map", "settings"];
 
@@ -20,25 +18,20 @@ interface IProps {
 
 export const SharedLayout: FC<IProps> = ({ children }) => {
   const [value, setValue] = useState("");
-  const [searchCityData, setSearchCityData] = useState<any[]>([]);
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
-  console.log(searchCityData);
+  console.log(pathname);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
+    if (!input.value) {
+      push("/");
+    } else {
+      push(`/search/${input.value}`);
+    }
+
     setValue(input.value);
   };
-
-  useEffect(() => {
-    if (!value) {
-      return;
-    }
-    (async () => {
-      const data = await WeatherService.searchCityWeather(value);
-      setSearchCityData(data);
-    })();
-  }, [value]);
 
   return (
     <>
