@@ -41,7 +41,7 @@ export const SharedLayout: FC<IProps> = ({ children }) => {
       <div className="container mx-auto flex flex-row-reverse px-8 py-8">
         <div className={`container px-8 ${rubik.className}`}>
           <header className="w-[65%]">
-            <div className="rounded-2xl bg-zinc-100 px-6 py-6">
+            <div className="rounded-2xl bg-zinc-100 px-4 py-4">
               <label>
                 <input
                   onChange={handleChange}
