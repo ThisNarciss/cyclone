@@ -1,9 +1,15 @@
+import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
+import { TodaysForecast } from "@/components/todays/TodaysForecast";
 import { WeatherService } from "@/services/weather-api";
+import { ForecastDay } from "@/ts/types/forecast-day";
 import { filteredHoursMoreInfo } from "@/utils/filteredHour";
 import { getCurrentTime } from "@/utils/getCurrentTime";
+import { getDayOfWeek } from "@/utils/getDayOfWeek";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect, MouseEvent, useMemo } from "react";
+
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const SearchCity = () => {
   const [searchCityData, setSearchCityData] = useState<any[]>([]);
@@ -37,9 +43,11 @@ const SearchCity = () => {
     return;
   }
   return (
-    <div className="flex items-start justify-between">
+    <div className="flex items-start justify-between py-[20px]">
       <section className="w-[65%]">
-        <h2 className="uppercase text-[]">Latest searches</h2>
+        <h2 className="mb-[20px] text-[14px] uppercase text-[#9399a2ff]">
+          Latest searches
+        </h2>
         {Boolean(searchCityData.length) && (
           <ul className="flex flex-col gap-[10px]">
             {searchCityData.map(({ current, location, forecast }, idx) => {
@@ -89,7 +97,11 @@ const SearchCity = () => {
               %
             </p>
             <p className="text-5xl">
-              {Math.round(searchCityData[id].current?.temp_c as number)}&#176;
+              {Math.round(
+                searchCityData[id].forecast.forecastday[0]?.day
+                  .maxtemp_c as number,
+              )}
+              &#176;
             </p>
           </div>
 
@@ -102,34 +114,14 @@ const SearchCity = () => {
             priority
           />
         </section>
-        <section className="col-start-2 row-start-1 rounded-2xl bg-zinc-100 px-6 py-6">
-          <h2 className="mb-6 text-sm uppercase text-gray">
-            Today&apos;s forecast
-          </h2>
-          {searchCityData[id].forecast.forecastday?.length && (
-            <ul className="flex items-center justify-around">
-              {getFilteredHour?.map((item) => {
-                return (
-                  <li
-                    key={item.time_epoch}
-                    className="border-r-2 border-borderColor text-center last:border-none"
-                  >
-                    <p className="text-base text-gray">{item.time.slice(-5)}</p>
-                    <Image
-                      className=""
-                      src={`https:${item.condition.icon}`}
-                      alt="weather picture"
-                      width={140}
-                      height={37}
-                      priority
-                    />
-                    <p className="text-2xl">{Math.round(item.temp_c)}&#176;</p>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+        <TodaysForecast
+          bgColor="--first-bg-color"
+          forecastday={searchCityData[id].forecast.forecastday}
+        />
+        <SevenDays
+          forecastday={searchCityData[id].forecast.forecastday}
+          bgColor="bg-[var(--first-bg-color)]"
+        />
       </div>
     </div>
   );

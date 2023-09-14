@@ -12,6 +12,8 @@ import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
 import { getDayOfWeek } from "@/utils/getDayOfWeek";
 import { filteredHoursMoreInfo } from "@/utils/filteredHour";
+import { TodaysForecast } from "@/components/todays/TodaysForecast";
+import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
 
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -65,34 +67,10 @@ export const MoreInfo = () => {
             priority
           />
         </section>
-        <section className="col-start-2 row-start-1 rounded-2xl bg-zinc-100 px-6 py-6">
-          <h2 className="mb-6 text-sm uppercase text-gray">
-            Today&apos;s forecast
-          </h2>
-          {forecastWeather?.length && (
-            <ul className="flex items-center justify-around">
-              {getFilteredHour?.map((item) => {
-                return (
-                  <li
-                    key={item.time_epoch}
-                    className="border-r-2 border-borderColor text-center last:border-none"
-                  >
-                    <p className="text-base text-gray">{item.time.slice(-5)}</p>
-                    <Image
-                      className=""
-                      src={`https:${item.condition.icon}`}
-                      alt="weather picture"
-                      width={140}
-                      height={37}
-                      priority
-                    />
-                    <p className="text-2xl">{Math.round(item.temp_c)}&#176;</p>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+        <TodaysForecast
+          sectionStyles="col-start-2 row-start-1 rounded-2xl  px-6 py-6"
+          forecastday={forecastWeather}
+        />
         <section className="col-start-1  row-start-2 row-end-3 ">
           <ul className="flex flex-wrap gap-x-[30px] gap-y-[20px]">
             <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
@@ -175,44 +153,10 @@ export const MoreInfo = () => {
             </li>
           </ul>
         </section>
-        <section className="col-start-2 row-start-2 row-end-3 rounded-2xl bg-zinc-100 px-6 py-6 text-[rgb(var(--second-text-color))]">
-          <h2 className="uppercase">7-day forecast</h2>
-          {forecastWeather.length && (
-            <ul className="flex flex-col justify-between gap-2">
-              {forecastWeather.slice(0, 7).map((day, idx) => {
-                return (
-                  <li
-                    key={day.date_epoch}
-                    className="flex items-center justify-between border-b-2 border-borderColor last:border-none"
-                  >
-                    <h3 className="w-[46px]">
-                      {idx === 0 ? "Today" : daysOfWeek[getDayOfWeek(day.date)]}
-                    </h3>
-                    <div className="flex  items-center">
-                      <Image
-                        className=""
-                        src={`https:${day.day.condition.icon}`}
-                        alt="weather picture"
-                        width={58}
-                        height={37}
-                        priority
-                      />
-                      <p className="w-[50px] text-[rgb(var(--foreground-rgb))]">
-                        {day.day.condition.text}
-                      </p>
-                    </div>
-                    <p>
-                      <span className="text-[rgb(var(--foreground-rgb))]">
-                        {Math.round(day.day.maxtemp_c)}
-                      </span>
-                      /{Math.round(day.day.mintemp_c)}
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+        <SevenDays
+          forecastday={forecastWeather}
+          sectionStyles="col-start-2 row-start-2 row-end-3 rounded-2xl px-6 py-6 text-[rgb(var(--second-text-color))]"
+        />
       </div>
     </div>
   );
