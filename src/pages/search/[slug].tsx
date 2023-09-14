@@ -1,15 +1,10 @@
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
 import { TodaysForecast } from "@/components/todays/TodaysForecast";
 import { WeatherService } from "@/services/weather-api";
-import { ForecastDay } from "@/ts/types/forecast-day";
-import { filteredHoursMoreInfo } from "@/utils/filteredHour";
 import { getCurrentTime } from "@/utils/getCurrentTime";
-import { getDayOfWeek } from "@/utils/getDayOfWeek";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState, useEffect, MouseEvent, useMemo } from "react";
-
-const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+import { useState, useEffect, MouseEvent } from "react";
 
 const SearchCity = () => {
   const [searchCityData, setSearchCityData] = useState<any[]>([]);
@@ -17,12 +12,6 @@ const SearchCity = () => {
   const { pathname, query } = useRouter();
 
   console.log(searchCityData);
-
-  const getFilteredHour = useMemo(
-    () =>
-      filteredHoursMoreInfo(searchCityData[id]?.forecast.forecastday[0]?.hour),
-    [searchCityData, id],
-  );
 
   useEffect(() => {
     if (!query.slug) {
@@ -56,7 +45,11 @@ const SearchCity = () => {
                   id={`${idx}`}
                   onClick={onItemClick}
                   key={idx}
-                  className="flex max-w-[843px] cursor-pointer items-center justify-between gap-[40px] rounded-2xl bg-zinc-100 px-[20px] py-[10px]"
+                  className={`flex max-w-[843px] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  px-[20px] py-[10px] ${
+                    id == idx
+                      ? "border-[2px] border-solid border-[#0095FF] bg-[var(--first-bg-color)]"
+                      : "bg-[var(--second-bg-color)]"
+                  } `}
                 >
                   <div className="flex items-center gap-[20px]">
                     <Image
