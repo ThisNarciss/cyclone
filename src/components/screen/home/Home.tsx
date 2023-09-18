@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, FC } from "react";
 import { FaWind, FaSun } from "react-icons/fa";
 import { SiRainmeter } from "react-icons/si";
 import { RiTempHotLine } from "react-icons/ri";
@@ -7,24 +7,35 @@ import { WeatherService } from "@/services/weather-api";
 import { ForecastDay } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
-import { getDayOfWeek } from "@/utils/getDayOfWeek";
 import { filteredHours } from "@/utils/filteredHour";
 import Link from "next/link";
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
+import { getLocation } from "@/utils/getLocation";
 
-const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+interface IProps {
+  weather: {
+    forecast: { forecastday: ForecastDay[] };
+    current: Current;
+    location: Location;
+  };
+}
 
-export const Home = () => {
-  const [currentWeather, setCurrentWeather] = useState<Current | null>(null);
-  const [forecastWeather, setForecastWeather] = useState<ForecastDay[]>([]);
-  const [location, setLocation] = useState<Location | null>(null);
+export const Home: FC<IProps> = ({ weather }) => {
+  const [
+    {
+      current: currentWeather,
+      forecast: { forecastday: forecastWeather },
+      location,
+    },
+    setWeather,
+  ] = useState(weather);
 
   useEffect(() => {
     (async () => {
-      const forecastData = await WeatherService.getWeather();
-      setCurrentWeather(forecastData.current);
-      setForecastWeather(forecastData.forecast.forecastday);
-      setLocation(forecastData.location);
+      const { latitude, longitude } = await getLocation();
+      const forecastData = await WeatherService.getWeather(latitude, longitude);
+
+      setWeather(forecastData);
     })();
   }, []);
 

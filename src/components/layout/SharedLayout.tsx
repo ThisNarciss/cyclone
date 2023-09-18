@@ -20,8 +20,6 @@ export const SharedLayout: FC<IProps> = ({ children }) => {
   const [value, setValue] = useState("");
   const { pathname, push } = useRouter();
 
-  console.log(pathname);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
     if (!input.value) {

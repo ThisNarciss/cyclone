@@ -1,4 +1,6 @@
+import { Map } from "@/components/screen/map/Map";
+
 const MapPage = () => {
-  return <div>MapPage</div>;
+  return <Map />;
 };
 export default MapPage;
