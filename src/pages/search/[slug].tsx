@@ -11,8 +11,6 @@ const SearchCity = () => {
   const [id, setId] = useState(0);
   const { pathname, query } = useRouter();
 
-  console.log(searchCityData);
-
   useEffect(() => {
     if (!query.slug) {
       return;
