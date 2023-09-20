@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { FaWind, FaSun, FaShower } from "react-icons/fa";
 import { SiRainmeter } from "react-icons/si";
 import { RiTempHotLine } from "react-icons/ri";
@@ -10,12 +10,8 @@ import { WeatherService } from "@/services/weather-api";
 import { ForecastDay } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
-import { getDayOfWeek } from "@/utils/getDayOfWeek";
-import { filteredHoursMoreInfo } from "@/utils/filteredHour";
 import { TodaysForecast } from "@/components/todays/TodaysForecast";
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
-
-const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const MoreInfo = () => {
   const [currentWeather, setCurrentWeather] = useState<Current | null>(null);
@@ -30,11 +26,6 @@ export const MoreInfo = () => {
       setLocation(forecastData.location);
     })();
   }, []);
-
-  const getFilteredHour = useMemo(
-    () => filteredHoursMoreInfo(forecastWeather[0]?.hour),
-    [forecastWeather],
-  );
 
   if (!forecastWeather?.length && !currentWeather) {
     return;

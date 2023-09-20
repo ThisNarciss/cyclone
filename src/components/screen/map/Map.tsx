@@ -51,13 +51,13 @@ export const Map = () => {
         ></GoogleMapReact>
       </div>
       {Boolean(weatherData.length) && (
-        <ul className="flex  flex-col gap-[10px]">
+        <ul className="flex w-[418px] flex-col gap-[10px]">
           {weatherData.map(({ location, current, forecast }, idx) => {
             return (
               <li
                 id={`${idx}`}
                 key={idx}
-                className={`flex max-w-[843px] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  bg-[var(--second-bg-color)] px-[20px]  py-[10px]
+                className={`flex w-[100%] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  bg-[var(--second-bg-color)] px-[20px]  py-[10px]
                 `}
               >
                 <div className="flex items-center gap-[20px]">

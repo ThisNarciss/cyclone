@@ -30,8 +30,8 @@ const SearchCity = () => {
     return;
   }
   return (
-    <div className="flex items-start justify-between py-[20px]">
-      <section className="w-[65%]">
+    <div className="flex items-start justify-between gap-[30px] py-[20px]">
+      <section className="w-[845px]">
         <h2 className="mb-[20px] text-[14px] uppercase text-[#9399a2ff]">
           Latest searches
         </h2>
@@ -43,7 +43,7 @@ const SearchCity = () => {
                   id={`${idx}`}
                   onClick={onItemClick}
                   key={idx}
-                  className={`flex max-w-[843px] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  px-[20px] py-[10px] ${
+                  className={`flex w-[845px] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  px-[20px] py-[10px] ${
                     id == idx
                       ? "border-[2px] border-solid border-[#0095FF] bg-[var(--first-bg-color)]"
                       : "bg-[var(--second-bg-color)]"
@@ -72,7 +72,7 @@ const SearchCity = () => {
         )}
       </section>
       <div className="w-[35%]">
-        <section className="col-start-1 row-start-1 flex  items-center justify-between px-10 py-10">
+        <section className="col-start-1  row-start-1 flex items-center justify-between border-b-[2px] border-[#dde0e4] py-10">
           <div className="">
             <h1 className="text-3xl">
               {searchCityData[id].location?.name === "Proskurovak"
@@ -107,9 +107,11 @@ const SearchCity = () => {
         </section>
         <TodaysForecast
           bgColor="--first-bg-color"
+          sectionStyles="col-start-1 row-start-2 py-10 border-b-[2px] border-[#dde0e4]"
           forecastday={searchCityData[id].forecast.forecastday}
         />
         <SevenDays
+          sectionStyles="col-start-2 row-start-1 row-end-4 py-10 text-[rgb(var(--second-text-color))]"
           forecastday={searchCityData[id].forecast.forecastday}
           bgColor="bg-[var(--first-bg-color)]"
         />

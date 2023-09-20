@@ -27,23 +27,27 @@ export const WeatherService = {
     }
   },
   searchCityWeather: async (city: string | string[] | undefined) => {
-    const { data: searchData } = await axios.get(
-      `/search.json?key=70c3a9b2560a4f9bacd72436231608&q=${city}`,
-    );
-
-    if (!searchData.length) {
-      return [];
-    }
-
-    const searchCity = searchData.map(async ({ name }: { name: string }) => {
-      const { data } = await axios.get(
-        `/forecast.json?days=7&key=70c3a9b2560a4f9bacd72436231608&q=${name}`,
+    try {
+      const { data: searchData } = await axios.get(
+        `/search.json?key=70c3a9b2560a4f9bacd72436231608&q=${city}`,
       );
+
+      if (!searchData.length) {
+        return [];
+      }
+
+      const searchCity = searchData.map(async ({ name }: { name: string }) => {
+        const { data } = await axios.get(
+          `/forecast.json?days=7&key=70c3a9b2560a4f9bacd72436231608&q=${name}`,
+        );
+        return data;
+      });
+
+      const data = await Promise.all(searchCity);
+
       return data;
-    });
-
-    const data = await Promise.all(searchCity);
-
-    return data;
+    } catch (error: any) {
+      return error.message;
+    }
   },
 };
