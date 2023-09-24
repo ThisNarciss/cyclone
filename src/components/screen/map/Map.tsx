@@ -13,12 +13,17 @@ interface IWeather {
   location: Location;
 }
 
+// const Marker = ({ text }: { text: string }) => (
+//   <div className="h-[50px] w-[50px] bg-[#000000] text-[#FFFFFF]">{text}</div>
+// );
+
 export const Map = () => {
   const [weatherData, setWeatherData] = useState<IWeather[]>([]);
   const [clickedCoordinates, setClickedCoordinates] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
+  const [marker, setMarker] = useState([]);
 
   useEffect(() => {
     if (!clickedCoordinates) {
@@ -34,7 +39,15 @@ export const Map = () => {
     })();
   }, [clickedCoordinates]);
 
-  const handleMapClick = ({ lat, lng }: { lat: number; lng: number }) => {
+  const handleMapClick = ({
+    lat,
+    lng,
+    event,
+  }: {
+    lat: number;
+    lng: number;
+    event: any;
+  }) => {
     setClickedCoordinates({ lat, lng });
   };
 
@@ -48,7 +61,13 @@ export const Map = () => {
           defaultCenter={{ lat: 50.449467834084736, lng: 30.5273104946471 }}
           defaultZoom={11}
           onClick={handleMapClick}
-        ></GoogleMapReact>
+        >
+          {/* <Marker
+            lat={50.955413}
+            lng={30.337844}
+            text={weatherData[0]?.location.name}
+          /> */}
+        </GoogleMapReact>
       </div>
       {Boolean(weatherData.length) && (
         <ul className="flex w-[418px] flex-col gap-[10px]">

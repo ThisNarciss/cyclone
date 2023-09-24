@@ -37,6 +37,7 @@ export const Home: FC<IProps> = ({ weather }) => {
 
       setWeather(forecastData);
     })();
+    localStorage.setItem("city-weather", JSON.stringify([]));
   }, []);
 
   const getFilteredHour = useMemo(

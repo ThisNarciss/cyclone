@@ -24,6 +24,13 @@ const SearchCity = () => {
   const onItemClick = (e: MouseEvent<HTMLLIElement>) => {
     const id = e.currentTarget.id;
     setId(Number(id));
+    localStorage.setItem(
+      "city-weather",
+      JSON.stringify([
+        ...JSON.parse(localStorage.getItem("city-weather") as string),
+        searchCityData[Number(id)],
+      ]),
+    );
   };
 
   if (!searchCityData?.length) {
