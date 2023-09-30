@@ -37,7 +37,7 @@ export const Home: FC<IProps> = ({ weather }) => {
 
       setWeather(forecastData);
     })();
-    if (!JSON.parse(localStorage.getItem("city-weather") as string).length) {
+    if (!JSON.parse(localStorage.getItem("city-weather") as string)) {
       localStorage.setItem("city-weather", JSON.stringify([]));
     }
   }, []);
