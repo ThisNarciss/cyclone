@@ -3,11 +3,17 @@ import { CityWeather } from "@/components/city/CityWeather";
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
 import { TodaysForecast } from "@/components/todays/TodaysForecast";
 import { WeatherService } from "@/services/weather-api";
+import { Current } from "@/ts/types/current-day";
+import { Forecast } from "@/ts/types/forecast-day";
+import { Location } from "@/ts/types/location";
+import { addToLocal } from "@/utils/addToLocal";
 import { useRouter } from "next/router";
 import { useState, useEffect, MouseEvent } from "react";
 
 export const SearchCity = () => {
-  const [searchCityData, setSearchCityData] = useState<any[]>([]);
+  const [searchCityData, setSearchCityData] = useState<
+    { location: Location; current: Current; forecast: Forecast }[]
+  >([]);
   const [id, setId] = useState(0);
   const { query } = useRouter();
 
@@ -24,13 +30,7 @@ export const SearchCity = () => {
   const onItemClick = (e: MouseEvent<HTMLLIElement>) => {
     const id = e.currentTarget.id;
     setId(Number(id));
-    localStorage.setItem(
-      "city-weather",
-      JSON.stringify([
-        ...JSON.parse(localStorage.getItem("city-weather") as string),
-        searchCityData[Number(id)],
-      ]),
-    );
+    addToLocal(searchCityData, Number(id));
   };
 
   if (!searchCityData?.length) {
