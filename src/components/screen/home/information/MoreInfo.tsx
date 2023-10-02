@@ -12,6 +12,7 @@ import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
 import { TodaysForecast } from "@/components/todays/TodaysForecast";
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
+import { getLocation } from "@/utils/getLocation";
 
 export const MoreInfo = () => {
   const [currentWeather, setCurrentWeather] = useState<Current | null>(null);
@@ -20,7 +21,9 @@ export const MoreInfo = () => {
 
   useEffect(() => {
     (async () => {
-      const forecastData = await WeatherService.getWeather();
+      const { latitude, longitude } = await getLocation();
+      const forecastData = await WeatherService.getWeather(latitude, longitude);
+
       setCurrentWeather(forecastData.current);
       setForecastWeather(forecastData.forecast.forecastday);
       setLocation(forecastData.location);

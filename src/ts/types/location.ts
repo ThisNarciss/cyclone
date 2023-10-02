@@ -3,4 +3,6 @@ export type Location = {
   region: string;
   country: string;
   tz_id: string;
+  lat: number;
+  lon: number;
 };

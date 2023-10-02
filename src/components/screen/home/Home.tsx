@@ -11,6 +11,7 @@ import { filteredHours } from "@/utils/filteredHour";
 import Link from "next/link";
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
 import { getLocation } from "@/utils/getLocation";
+import { useRouter } from "next/router";
 
 interface IProps {
   weather: {
@@ -29,18 +30,34 @@ export const Home: FC<IProps> = ({ weather }) => {
     },
     setWeather,
   ] = useState(weather);
+  const [{ lat, lon }, setLoc] = useState({ lat: 0, lon: 0 });
+
+  const { query } = useRouter();
 
   useEffect(() => {
     (async () => {
-      const { latitude, longitude } = await getLocation();
-      const forecastData = await WeatherService.getWeather(latitude, longitude);
+      if (!query.lat && !query.lon) {
+        const { latitude, longitude } = await getLocation();
+        setLoc({ lat: latitude, lon: longitude });
+      } else {
+        setLoc({ lat: Number(query.lat), lon: Number(query.lon) });
+      }
+    })();
+  }, [query.lat, query.lon]);
+
+  useEffect(() => {
+    if (!lat && !lon) {
+      return;
+    }
+    (async () => {
+      const forecastData = await WeatherService.getWeather(lat, lon);
 
       setWeather(forecastData);
     })();
     if (!JSON.parse(localStorage.getItem("city-weather") as string)) {
       localStorage.setItem("city-weather", JSON.stringify([]));
     }
-  }, []);
+  }, [lat, lon]);
 
   const getFilteredHour = useMemo(
     () => filteredHours(forecastWeather[0]?.hour),

@@ -2,10 +2,12 @@ import { WeatherService } from "@/services/weather-api";
 import { Current } from "@/ts/types/current-day";
 import { ForecastDay } from "@/ts/types/forecast-day";
 import { Location } from "@/ts/types/location";
+import { addToLocal } from "@/utils/addToLocal";
 import { getCurrentTime } from "@/utils/getCurrentTime";
 import GoogleMapReact from "google-map-react";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useState, useEffect, MouseEvent } from "react";
 
 interface IWeather {
   forecast: { forecastday: ForecastDay[] };
@@ -24,6 +26,7 @@ export const Map = () => {
     lng: number;
   } | null>(null);
   const [marker, setMarker] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (!clickedCoordinates) {
@@ -51,6 +54,18 @@ export const Map = () => {
     setClickedCoordinates({ lat, lng });
   };
 
+  const onItemClick = (e: MouseEvent<HTMLLIElement>) => {
+    const id = e.currentTarget.id;
+    addToLocal(weatherData, Number(id));
+    router.push({
+      pathname: "/",
+      query: {
+        lon: weatherData[Number(id)].location.lon,
+        lat: weatherData[Number(id)].location.lat,
+      },
+    });
+  };
+
   return (
     <div className="mt-[20px] flex items-start gap-[20px]">
       <div className=" h-[800px] w-[65%]  overflow-hidden rounded-2xl">
@@ -76,6 +91,7 @@ export const Map = () => {
               <li
                 id={`${idx}`}
                 key={idx}
+                onClick={onItemClick}
                 className={`flex w-[100%] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  bg-[var(--second-bg-color)] px-[20px]  py-[10px]
                 `}
               >
