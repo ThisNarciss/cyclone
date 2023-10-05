@@ -12,23 +12,27 @@ import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
 import { TodaysForecast } from "@/components/todays/TodaysForecast";
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
-import { getLocation } from "@/utils/getLocation";
+import { useRouter } from "next/router";
 
 export const MoreInfo = () => {
   const [currentWeather, setCurrentWeather] = useState<Current | null>(null);
   const [forecastWeather, setForecastWeather] = useState<ForecastDay[]>([]);
   const [location, setLocation] = useState<Location | null>(null);
 
+  const { query } = useRouter();
+
   useEffect(() => {
     (async () => {
-      const { latitude, longitude } = await getLocation();
-      const forecastData = await WeatherService.getWeather(latitude, longitude);
+      const forecastData = await WeatherService.getWeather(
+        Number(query.lat),
+        Number(query.lon),
+      );
 
       setCurrentWeather(forecastData.current);
       setForecastWeather(forecastData.forecast.forecastday);
       setLocation(forecastData.location);
     })();
-  }, []);
+  }, [query.lat, query.lon]);
 
   if (!forecastWeather?.length && !currentWeather) {
     return;

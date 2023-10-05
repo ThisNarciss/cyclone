@@ -22,6 +22,7 @@ interface IProps {
 }
 
 export const Home: FC<IProps> = ({ weather }) => {
+  console.log(weather);
   const [
     {
       current: currentWeather,
@@ -127,7 +128,10 @@ export const Home: FC<IProps> = ({ weather }) => {
           <div className="mb-6 flex items-center justify-between ">
             <h2 className="text-sm  uppercase text-gray">Air conditions</h2>
             <Link
-              href="/info/more-info"
+              href={{
+                pathname: "/info/more-info",
+                query: { lat, lon },
+              }}
               className="rounded-[10px] bg-btnColor px-2 py-1 text-[rgb(var(--background-end-rgb))]"
             >
               See more
