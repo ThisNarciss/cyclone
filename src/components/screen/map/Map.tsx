@@ -4,10 +4,11 @@ import { ForecastDay } from "@/ts/types/forecast-day";
 import { Location } from "@/ts/types/location";
 import { addToLocal } from "@/utils/addToLocal";
 import { getCurrentTime } from "@/utils/getCurrentTime";
-import GoogleMapReact from "google-map-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect, MouseEvent } from "react";
+import { GoogleMap } from "./google-map/GoogleMap";
+import { nanoid } from "nanoid";
 
 interface IWeather {
   forecast: { forecastday: ForecastDay[] };
@@ -15,43 +16,33 @@ interface IWeather {
   location: Location;
 }
 
-// const Marker = ({ text }: { text: string }) => (
-//   <div className="h-[50px] w-[50px] bg-[#000000] text-[#FFFFFF]">{text}</div>
-// );
-
 export const Map = () => {
   const [weatherData, setWeatherData] = useState<IWeather[]>([]);
-  const [clickedCoordinates, setClickedCoordinates] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-  const [marker, setMarker] = useState([]);
+  const [markers, setMarkers] = useState<
+    { id: string; lat: number; lng: number; city: string }[]
+  >([]);
+
   const router = useRouter();
 
-  useEffect(() => {
-    if (!clickedCoordinates) {
+  const handleMapClick = async ({ lat, lng }: { lat: number; lng: number }) => {
+    const weather = await WeatherService.getWeather(lat, lng);
+    console.log(weather);
+    console.log(weatherData);
+    if (
+      weatherData.some((item) => item.location.name === weather.location.name)
+    ) {
       return;
     }
-    (async () => {
-      const weather = await WeatherService.getWeather(
-        clickedCoordinates?.lat,
-        clickedCoordinates?.lng,
-      );
-
-      setWeatherData((prevState) => [...prevState, weather]);
-    })();
-  }, [clickedCoordinates]);
-
-  const handleMapClick = ({
-    lat,
-    lng,
-    event,
-  }: {
-    lat: number;
-    lng: number;
-    event: any;
-  }) => {
-    setClickedCoordinates({ lat, lng });
+    setWeatherData((prevState) => [weather, ...prevState.slice(0, 8)]);
+    setMarkers((prevState) => [
+      ...prevState,
+      {
+        id: nanoid(),
+        lat: Number(lat.toFixed(6)),
+        lng: Number(lng.toFixed(6)),
+        city: weather.location.name,
+      },
+    ]);
   };
 
   const onItemClick = (e: MouseEvent<HTMLLIElement>) => {
@@ -69,20 +60,7 @@ export const Map = () => {
   return (
     <div className="mt-[20px] flex items-start gap-[20px]">
       <div className=" h-[800px] w-[65%]  overflow-hidden rounded-2xl">
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: "AIzaSyCDxegmJ-mKsi8QllTO5owrclwEaPxnEr8",
-          }}
-          defaultCenter={{ lat: 50.449467834084736, lng: 30.5273104946471 }}
-          defaultZoom={11}
-          onClick={handleMapClick}
-        >
-          {/* <Marker
-            lat={50.955413}
-            lng={30.337844}
-            text={weatherData[0]?.location.name}
-          /> */}
-        </GoogleMapReact>
+        <GoogleMap handleMapClick={handleMapClick} markers={markers} />
       </div>
       {Boolean(weatherData.length) && (
         <ul className="flex w-[418px] flex-col gap-[10px]">
