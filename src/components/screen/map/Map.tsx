@@ -26,8 +26,7 @@ export const Map = () => {
 
   const handleMapClick = async ({ lat, lng }: { lat: number; lng: number }) => {
     const weather = await WeatherService.getWeather(lat, lng);
-    console.log(weather);
-    console.log(weatherData);
+
     if (
       weatherData.some((item) => item.location.name === weather.location.name)
     ) {

@@ -5,15 +5,31 @@ import Image from "next/image";
 import { FC } from "react";
 
 interface IProps {
-  cities: { current: Current; forecast: Forecast; location: Location }[];
-  id: number;
+  cities: {
+    current: Current | null;
+    forecast: Forecast;
+    location: Location | null;
+  }[];
+  id?: number;
+  styles?: { sectionStyle: string; titleStyle: string; textStyle: string };
 }
 
-export const CityWeather: FC<IProps> = ({ cities, id }) => {
+const stylesData = {
+  sectionStyle:
+    "col-start-1  row-start-1 flex items-center justify-between border-b-[2px] border-[#dde0e4] py-10",
+  titleStyle: "text-3xl",
+  textStyle: "text-5xl",
+};
+
+export const CityWeather: FC<IProps> = ({
+  cities,
+  id = 0,
+  styles = stylesData,
+}) => {
   return (
-    <section className="col-start-1  row-start-1 flex items-center justify-between border-b-[2px] border-[#dde0e4] py-10">
+    <section className={`${styles.sectionStyle}`}>
       <div className="">
-        <h1 className="text-3xl">
+        <h1 className={`${styles.titleStyle}`}>
           {cities[id].location?.name === "Proskurovak"
             ? "Khmelnytskyi"
             : cities[id].location?.name}
@@ -22,7 +38,7 @@ export const CityWeather: FC<IProps> = ({ cities, id }) => {
           Chance of rain:{" "}
           {cities[id].forecast.forecastday[0]?.day.daily_chance_of_rain}%
         </p>
-        <p className="text-5xl">
+        <p className={`${styles.textStyle}`}>
           {Math.round(
             cities[id].forecast.forecastday[0]?.day.maxtemp_c as number,
           )}
