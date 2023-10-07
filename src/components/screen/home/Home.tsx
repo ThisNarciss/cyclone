@@ -20,6 +20,8 @@ interface IProps {
 }
 
 export const Home: FC<IProps> = ({ weather }) => {
+  console.log(weather);
+
   const [
     {
       current: currentWeather,
