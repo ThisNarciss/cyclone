@@ -19,7 +19,6 @@ interface IProps {
 
 export const GoogleMap: FC<IProps> = ({ handleMapClick, markers }) => {
   const ref = useRef();
-  console.log(ref);
 
   return (
     <GoogleMapReact
