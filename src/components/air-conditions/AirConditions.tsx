@@ -2,7 +2,7 @@ import { FaWind, FaSun } from "react-icons/fa";
 import { SiRainmeter } from "react-icons/si";
 import { RiTempHotLine } from "react-icons/ri";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { Current } from "@/ts/types/current-day";
 import { ForecastDay } from "@/ts/types/forecast-day";
 
@@ -13,11 +13,26 @@ interface IProps {
   location: { lat: number; lon: number };
 }
 
+type CurrentKey = keyof Current;
+
+type Items = {
+  temp: string;
+  speed: string;
+  pressure: string;
+  distance: string;
+};
+
 export const AirConditions: FC<IProps> = ({
   currentWeather,
   forecastWeather,
   location: { lat, lon },
 }) => {
+  const [units, setUnits] = useState<Items | null>(null);
+
+  useEffect(() => {
+    setUnits(JSON.parse(localStorage.getItem("units") as string));
+  }, []);
+
   return (
     <section className="col-start-1  row-start-3 rounded-2xl bg-zinc-100 px-6 py-6">
       <div className="mb-6 flex items-center justify-between ">
@@ -41,7 +56,12 @@ export const AirConditions: FC<IProps> = ({
               Real Feel
             </h3>
             <p className="text-3xl">
-              {Math.round(currentWeather?.feelslike_c as number)}&#176;
+              {Math.round(
+                currentWeather[
+                  `feelslike${units?.temp ? units?.temp : "_c"}` as CurrentKey
+                ] as number,
+              )}
+              &#176;
             </p>
           </div>
         </div>
@@ -49,7 +69,14 @@ export const AirConditions: FC<IProps> = ({
           <FaWind size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">Wind</h3>
-            <p className="text-3xl">{currentWeather?.wind_kph} km/h</p>
+            <p className="text-3xl">
+              {
+                currentWeather[
+                  `wind${units?.speed ? units?.speed : "_kph"}` as CurrentKey
+                ] as number
+              }{" "}
+              {units?.speed === "_kph" ? "km/h" : "miles/h"}
+            </p>
           </div>
         </div>
         <div className="flex gap-[10px]">

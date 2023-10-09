@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState, useEffect, useMemo, FC } from "react";
 import { WeatherService } from "@/services/weather-api";
-import { ForecastDay } from "@/ts/types/forecast-day";
+import { ForecastDay, Hour } from "@/ts/types/forecast-day";
 import { Current } from "@/ts/types/current-day";
 import { Location } from "@/ts/types/location";
 import { filteredHours } from "@/utils/filteredHour";
@@ -10,6 +10,7 @@ import { getLocation } from "@/utils/getLocation";
 import { useRouter } from "next/router";
 import { CityWeather } from "@/components/city/CityWeather";
 import { AirConditions } from "@/components/air-conditions/AirConditions";
+import { getTwelveHourTime } from "@/utils/getTwelveHourTime";
 
 interface IProps {
   weather: {
@@ -19,9 +20,21 @@ interface IProps {
   };
 }
 
-export const Home: FC<IProps> = ({ weather }) => {
-  console.log(weather);
+type CurrentKey = keyof Hour;
 
+type Items = {
+  temp: string;
+  speed: string;
+  pressure: string;
+  distance: string;
+};
+
+type General = {
+  isLocOn?: boolean;
+  isTwelveHourOn?: boolean;
+};
+
+export const Home: FC<IProps> = ({ weather }) => {
   const [
     {
       current: currentWeather,
@@ -32,7 +45,15 @@ export const Home: FC<IProps> = ({ weather }) => {
   ] = useState(weather);
   const [{ lat, lon }, setLoc] = useState({ lat: 0, lon: 0 });
 
+  const [units, setUnits] = useState<Items | null>(null);
+  const [general, setGeneral] = useState<General | null>(null);
+
   const { query } = useRouter();
+
+  useEffect(() => {
+    setUnits(JSON.parse(localStorage.getItem("units") as string));
+    setGeneral(JSON.parse(localStorage.getItem("general") as string));
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -99,7 +120,11 @@ export const Home: FC<IProps> = ({ weather }) => {
                     key={item.time_epoch}
                     className="border-r-2 border-borderColor text-center last:border-none"
                   >
-                    <p className="text-base text-gray">{item.time.slice(-5)}</p>
+                    <p className="text-base text-gray">
+                      {general?.isTwelveHourOn
+                        ? getTwelveHourTime(item.time.slice(-5))
+                        : item.time.slice(-5)}
+                    </p>
                     <Image
                       className=""
                       src={`https:${item.condition.icon}`}
@@ -108,7 +133,16 @@ export const Home: FC<IProps> = ({ weather }) => {
                       height={37}
                       priority
                     />
-                    <p className="text-2xl">{Math.round(item.temp_c)}&#176;</p>
+                    <p className="text-2xl">
+                      {Math.round(
+                        item[
+                          `temp${
+                            units?.temp ? units?.temp : "_c"
+                          }` as CurrentKey
+                        ] as number,
+                      )}
+                      &#176;
+                    </p>
                   </li>
                 );
               })}

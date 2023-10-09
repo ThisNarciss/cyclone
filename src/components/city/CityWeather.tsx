@@ -1,8 +1,8 @@
 import { Current } from "@/ts/types/current-day";
-import { Forecast } from "@/ts/types/forecast-day";
+import { Day, Forecast } from "@/ts/types/forecast-day";
 import { Location } from "@/ts/types/location";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 
 interface IProps {
   cities: {
@@ -13,6 +13,14 @@ interface IProps {
   id?: number;
   styles?: { sectionStyle: string; titleStyle: string; textStyle: string };
 }
+type CurrentKey = keyof Day;
+
+type Items = {
+  temp: string;
+  speed: string;
+  pressure: string;
+  distance: string;
+};
 
 const stylesData = {
   sectionStyle:
@@ -26,6 +34,12 @@ export const CityWeather: FC<IProps> = ({
   id = 0,
   styles = stylesData,
 }) => {
+  const [units, setUnits] = useState<Items | null>(null);
+
+  useEffect(() => {
+    setUnits(JSON.parse(localStorage.getItem("units") as string));
+  }, []);
+
   return (
     <section className={`${styles.sectionStyle}`}>
       <div className="">
@@ -40,7 +54,9 @@ export const CityWeather: FC<IProps> = ({
         </p>
         <p className={`${styles.textStyle}`}>
           {Math.round(
-            cities[id].forecast.forecastday[0]?.day.maxtemp_c as number,
+            cities[id].forecast.forecastday[0]?.day[
+              `maxtemp${units?.temp ? units?.temp : "_c"}` as CurrentKey
+            ] as number,
           )}
           &#176;
         </p>

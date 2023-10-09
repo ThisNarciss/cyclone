@@ -1,6 +1,6 @@
 import { WeatherService } from "@/services/weather-api";
 import { Current } from "@/ts/types/current-day";
-import { ForecastDay } from "@/ts/types/forecast-day";
+import { Day, ForecastDay } from "@/ts/types/forecast-day";
 import { Location } from "@/ts/types/location";
 import { addToLocal } from "@/utils/addToLocal";
 import { getCurrentTime } from "@/utils/getCurrentTime";
@@ -16,13 +16,27 @@ interface IWeather {
   location: Location;
 }
 
+type Items = {
+  temp: string;
+  speed: string;
+  pressure: string;
+  distance: string;
+};
+
+type CurrentKey = keyof Day;
+
 export const Map = () => {
   const [weatherData, setWeatherData] = useState<IWeather[]>([]);
   const [markers, setMarkers] = useState<
     { id: string; lat: number; lng: number; city: string }[]
   >([]);
+  const [units, setUnits] = useState<Items | null>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    setUnits(JSON.parse(localStorage.getItem("units") as string));
+  }, []);
 
   const handleMapClick = async ({ lat, lng }: { lat: number; lng: number }) => {
     const weather = await WeatherService.getWeather(lat, lng);
@@ -90,7 +104,12 @@ export const Map = () => {
                 </div>
 
                 <p className="text-[25px] text-[#9399a2ff]">
-                  {Math.round(forecast.forecastday[0]?.day.maxtemp_c)}&#176;
+                  {Math.round(
+                    forecast.forecastday[0]?.day[
+                      `maxtemp${units?.temp ? units?.temp : "_c"}` as CurrentKey
+                    ] as number,
+                  )}
+                  &#176;
                 </p>
               </li>
             );
