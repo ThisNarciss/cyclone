@@ -1,6 +1,6 @@
 type Astro = { sunrise: string; sunset: string };
 
-type Day = {
+export type Day = {
   daily_chance_of_rain: number;
   daily_chance_of_snow: number;
   maxtemp_c: number;
