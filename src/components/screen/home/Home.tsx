@@ -57,14 +57,16 @@ export const Home: FC<IProps> = ({ weather }) => {
 
   useEffect(() => {
     (async () => {
-      if (!query.lat && !query.lon) {
-        const { latitude, longitude } = await getLocation();
-        setLoc({ lat: latitude, lon: longitude });
-      } else {
-        setLoc({ lat: Number(query.lat), lon: Number(query.lon) });
+      if (general?.isLocOn) {
+        if (!query.lat && !query.lon) {
+          const { latitude, longitude } = await getLocation();
+          setLoc({ lat: latitude, lon: longitude });
+        } else {
+          setLoc({ lat: Number(query.lat), lon: Number(query.lon) });
+        }
       }
     })();
-  }, [query.lat, query.lon]);
+  }, [query.lat, query.lon, general]);
 
   useEffect(() => {
     if (!lat && !lon) {
