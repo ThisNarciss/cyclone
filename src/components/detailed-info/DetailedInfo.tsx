@@ -35,7 +35,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
   return (
     <section className="col-start-1  row-start-2 row-end-3 ">
       <ul className="flex flex-wrap gap-x-[30px] gap-y-[20px]">
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <FaSun size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -44,7 +44,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
             <p className="text-3xl">{currentWeather?.uv}</p>
           </div>
         </li>
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <FaWind size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">Wind</h3>
@@ -57,7 +57,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
             </p>
           </div>
         </li>
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <FaShower size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -68,7 +68,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
             </p>
           </div>
         </li>
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <MdVisibility size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -83,7 +83,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
             </p>
           </div>
         </li>
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <RiTempHotLine size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -100,7 +100,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
             </p>
           </div>
         </li>
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <SiRainmeter size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -111,7 +111,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
             </p>
           </div>
         </li>
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <IoIosSpeedometer size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">
@@ -130,7 +130,7 @@ export const DetailedWeatherInfo: FC<IProps> = ({
             </p>
           </div>
         </li>
-        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-2xl bg-zinc-100 px-6 py-6">
+        <li className="flex basis-[calc(50%-15px)] gap-[10px] rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <FiSunset size="24px" color="rgb(147, 153, 162)" />
           <div>
             <h3 className="mb-[10px] text-xl font-normal text-gray">Sunset</h3>

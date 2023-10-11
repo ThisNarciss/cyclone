@@ -56,13 +56,13 @@ export const MoreInfo = () => {
           forecastWeather={forecastWeather}
         />
         <TodaysForecast
-          sectionStyles="col-start-2 row-start-1 rounded-2xl  px-6 py-6"
+          sectionStyles="col-start-2 row-start-1 rounded-[24px]  px-6 py-6"
           forecastday={forecastWeather}
         />
 
         <SevenDays
           forecastday={forecastWeather}
-          sectionStyles="col-start-2 row-start-2 row-end-3 rounded-2xl px-6 py-6 text-[rgb(var(--second-text-color))]"
+          sectionStyles="col-start-2 row-start-2 row-end-3 rounded-[24px] px-6 py-6 text-[rgb(var(--second-text-color))]"
         />
       </div>
     </div>

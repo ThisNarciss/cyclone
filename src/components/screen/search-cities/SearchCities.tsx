@@ -46,7 +46,7 @@ export const SearchCity = () => {
           <CitiesList
             cities={searchCityData}
             id={id}
-            itemStyle="flex w-[845px] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  px-[20px] py-[10px]"
+            itemStyle="flex w-[845px] cursor-pointer items-center justify-between gap-[40px] rounded-[24px]  px-[20px] py-[10px]"
             onClick={onItemClick}
           />
         )}

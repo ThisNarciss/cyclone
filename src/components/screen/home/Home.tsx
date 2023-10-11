@@ -110,7 +110,7 @@ export const Home: FC<IProps> = ({ weather }) => {
           }}
         />
 
-        <section className="col-start-1 row-start-2 rounded-2xl bg-zinc-100 px-6 py-6">
+        <section className="col-start-1 row-start-2 rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
           <h2 className="mb-6 text-sm uppercase text-gray">
             Today&apos;s forecast
           </h2>

@@ -22,7 +22,7 @@ type CurrentKey = keyof Day;
 export const SevenDays: FC<IProps> = ({
   forecastday,
   bgColor = "bg-[var(--second-bg-color)]",
-  sectionStyles = "col-start-2 row-start-1 row-end-4 rounded-2xl px-6 py-6 text-[rgb(var(--second-text-color))]",
+  sectionStyles = "col-start-2 row-start-1 row-end-4 rounded-[24px] px-6 py-6 text-[rgb(var(--second-text-color))]",
 }) => {
   const [units, setUnits] = useState<Items | null>(null);
 

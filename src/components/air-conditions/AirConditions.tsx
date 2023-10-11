@@ -34,7 +34,7 @@ export const AirConditions: FC<IProps> = ({
   }, []);
 
   return (
-    <section className="col-start-1  row-start-3 rounded-2xl bg-zinc-100 px-6 py-6">
+    <section className="col-start-1  row-start-3 rounded-[24px] bg-[var(--second-bg-color)] px-6 py-6">
       <div className="mb-6 flex items-center justify-between ">
         <h2 className="text-sm  uppercase text-gray">Air conditions</h2>
         <Link

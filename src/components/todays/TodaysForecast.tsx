@@ -25,8 +25,8 @@ type General = {
 };
 
 export const TodaysForecast: FC<IProps> = ({
-  bgColor = "bg-zinc-100",
-  sectionStyles = "col-start-1 row-start-2 rounded-2xl px-6 py-6",
+  bgColor = "bg-[var(--second-bg-color)]",
+  sectionStyles = "col-start-1 row-start-2 rounded-[24px] px-6 py-6",
   forecastday,
 }) => {
   const [units, setUnits] = useState<Items | null>(null);

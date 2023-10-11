@@ -72,7 +72,7 @@ export const Map = () => {
 
   return (
     <div className="mt-[20px] flex items-start gap-[20px]">
-      <div className=" h-[800px] w-[65%]  overflow-hidden rounded-2xl">
+      <div className=" h-[800px] w-[65%]  overflow-hidden rounded-[24px]">
         <GoogleMap handleMapClick={handleMapClick} markers={markers} />
       </div>
       {Boolean(weatherData.length) && (
@@ -83,7 +83,7 @@ export const Map = () => {
                 id={`${idx}`}
                 key={idx}
                 onClick={onItemClick}
-                className={`flex w-[100%] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  bg-[var(--second-bg-color)] px-[20px]  py-[10px]
+                className={`flex w-[100%] cursor-pointer items-center justify-between gap-[40px] rounded-[24px]  bg-[var(--second-bg-color)] px-[20px]  py-[10px]
                 `}
               >
                 <div className="flex items-center gap-[20px]">

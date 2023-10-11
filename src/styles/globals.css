@@ -4,10 +4,10 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
+  --second-bg-color: #eaecef;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --first-bg-color: rgb(255, 255, 255);
-  --second-bg-color: rgb(244, 244, 245);
   --second-text-color: 147, 153, 162;
 }
 

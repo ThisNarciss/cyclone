@@ -16,7 +16,7 @@ export const CitiesList: FC<IProps> = ({
   cities,
   onClick,
   id,
-  itemStyle = "flex w-[845px] cursor-pointer items-center justify-between gap-[40px] rounded-2xl  px-[40px] py-[30px]",
+  itemStyle = "flex w-[845px] cursor-pointer items-center justify-between gap-[40px] rounded-[24px]  px-[40px] py-[30px]",
 }) => {
   return (
     <ul className="flex flex-col gap-[10px]">
