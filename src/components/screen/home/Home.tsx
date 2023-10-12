@@ -70,17 +70,12 @@ export const Home: FC<IProps> = ({ weather }) => {
   }, [query.lat, query.lon, general]);
 
   useEffect(() => {
-    // if (!lat && !lon) {
-    //   return;
-    // }
-
     (async () => {
       const forecastData = await WeatherService.getWeather(lat, lon);
 
       setWeather(forecastData);
     })();
     if (!JSON.parse(localStorage.getItem("city-weather") as string)) {
-      console.log("run");
 
       localStorage.setItem("city-weather", JSON.stringify([]));
     }
