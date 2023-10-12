@@ -43,11 +43,12 @@ export const Home: FC<IProps> = ({ weather }) => {
     },
     setWeather,
   ] = useState(weather);
-  const [{ lat, lon }, setLoc] = useState({ lat: 0, lon: 0 });
-
+  const [{ lat, lon }, setLoc] = useState({
+    lat: location.lat || 0,
+    lon: location.lon || 0,
+  });
   const [units, setUnits] = useState<Items | null>(null);
   const [general, setGeneral] = useState<General | null>(null);
-
   const { query } = useRouter();
 
   useEffect(() => {
@@ -69,15 +70,18 @@ export const Home: FC<IProps> = ({ weather }) => {
   }, [query.lat, query.lon, general]);
 
   useEffect(() => {
-    if (!lat && !lon) {
-      return;
-    }
+    // if (!lat && !lon) {
+    //   return;
+    // }
+
     (async () => {
       const forecastData = await WeatherService.getWeather(lat, lon);
 
       setWeather(forecastData);
     })();
     if (!JSON.parse(localStorage.getItem("city-weather") as string)) {
+      console.log("run");
+
       localStorage.setItem("city-weather", JSON.stringify([]));
     }
   }, [lat, lon]);

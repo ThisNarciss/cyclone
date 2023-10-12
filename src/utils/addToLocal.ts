@@ -3,16 +3,13 @@ import { Forecast } from "@/ts/types/forecast-day";
 import { Location } from "@/ts/types/location";
 
 type Local = {
-  location: Location;
-  current: Current;
-  forecast: Forecast;
+  location: { lat: number; lon: number; name: string };
 };
 
 export const addToLocal = (cities: Local[], id: number) => {
   if (
-    JSON.parse(localStorage.getItem("city-weather") as string).some(
-      (item: { location: Location }) =>
-        item.location.name === cities[Number(id)].location.name,
+    JSON.parse(localStorage.getItem("city-weather") as string)?.some(
+      (item: Location) => item.name === cities[id].location.name,
     )
   ) {
     return;
@@ -21,8 +18,15 @@ export const addToLocal = (cities: Local[], id: number) => {
     "city-weather",
 
     JSON.stringify([
-      cities[Number(id)],
-      ...JSON.parse(localStorage.getItem("city-weather") as string).slice(0, 7),
+      {
+        lat: cities[id].location.lat,
+        lon: cities[id].location.lon,
+        name: cities[id].location.name,
+      },
+      ...JSON.parse(localStorage.getItem("city-weather") as string)?.slice(
+        0,
+        7,
+      ),
     ]),
   );
 };

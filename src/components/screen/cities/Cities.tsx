@@ -2,6 +2,7 @@ import { CitiesList } from "@/components/cities-list/CitiesList";
 import { CityWeather } from "@/components/city/CityWeather";
 import { SevenDays } from "@/components/sevenday-forecast/SevenDay";
 import { TodaysForecast } from "@/components/todays/TodaysForecast";
+import { WeatherService } from "@/services/weather-api";
 import { Current } from "@/ts/types/current-day";
 import { Forecast } from "@/ts/types/forecast-day";
 import { Location } from "@/ts/types/location";
@@ -14,8 +15,17 @@ export const Cities: FC = () => {
   const [id, setId] = useState(0);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("city-weather") as string);
-    setCities(data);
+    (async () => {
+      const data = JSON.parse(
+        localStorage.getItem("city-weather") as string,
+      ).map(async (item: { lat: number; lon: number; name: string }) => {
+        const res = await WeatherService.getWeather(item.lat, item.lon);
+        return res;
+      });
+      const result = await Promise.all(data);
+
+      setCities(result);
+    })();
   }, []);
 
   const onItemClick = (e: MouseEvent<HTMLLIElement>) => {
