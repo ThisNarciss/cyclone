@@ -49,6 +49,7 @@ export const Home: FC<IProps> = ({ weather }) => {
   });
   const [units, setUnits] = useState<Items | null>(null);
   const [general, setGeneral] = useState<General | null>(null);
+  const [isClient, setIsClient] = useState(false)
   const { query } = useRouter();
 
   useEffect(() => {
@@ -70,16 +71,25 @@ export const Home: FC<IProps> = ({ weather }) => {
   }, [query.lat, query.lon, general]);
 
   useEffect(() => {
+    if (!JSON.parse(localStorage.getItem("city-weather") as string)) {
+
+      localStorage.setItem("city-weather", JSON.stringify([]));
+    }
+    if (!isClient) {
+      setIsClient(true)
+      
+      return
+    }
+    
     (async () => {
       const forecastData = await WeatherService.getWeather(lat, lon);
 
       setWeather(forecastData);
     })();
-    if (!JSON.parse(localStorage.getItem("city-weather") as string)) {
 
-      localStorage.setItem("city-weather", JSON.stringify([]));
-    }
-  }, [lat, lon]);
+    
+    
+  }, [lat, lon, isClient]);
 
   const getFilteredHour = useMemo(
     () => filteredHours(forecastWeather[0]?.hour),
